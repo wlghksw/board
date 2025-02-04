@@ -55,6 +55,9 @@ public class Post {
     @Column(nullable = false)
     private Integer deposit;
 
+    @Column(nullable = true, length = 500)
+    private String photoUrl;
+
     //(방 있음 / 방 없음)
     @Column(nullable = false, length = 50)
     private String category;
