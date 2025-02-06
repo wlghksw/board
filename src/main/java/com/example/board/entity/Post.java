@@ -1,7 +1,6 @@
 package com.example.board.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,8 +24,8 @@ public class Post {
     @Column(nullable = false, length = 200)
     private String author_name;
 
-    @Column(nullable = false)
-    private LocalDateTime post_date;
+    @Column(nullable = false, name = "post_date")
+    private LocalDateTime postDate;
 
     @Column(nullable = false)
     private Integer post_views;
@@ -58,7 +57,6 @@ public class Post {
     @Column(nullable = true, length = 500)
     private String photoUrl;
 
-    //(방 있음 / 방 없음)
     @Column(nullable = false, length = 50)
-    private String category;
+    private String category; // 방 있음 / 방 없음
 }

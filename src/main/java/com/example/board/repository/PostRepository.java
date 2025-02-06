@@ -5,9 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Page<Post> findByCategory(String category, Pageable pageable);
+    // 최신순 정렬 적용
+    Page<Post> findByCategoryOrderByPostDateDesc(String category, Pageable pageable);
 }

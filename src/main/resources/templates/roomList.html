@@ -22,30 +22,32 @@
         <td th:text="${post.rm_board_title}"></td>
         <td th:text="${post.author_name}"></td>
         <td th:text="${post.post_views}"></td>
-        <td th:text="${post.post_date}"></td>
+        <td th:text="${post.postDate}"></td>
         <td th:text="${post.author_region}"></td>
         <td th:text="${post.category}"></td>
         <td>
-            <img th:src="${post.photoUrl}" width="100" height="100">
+            <img th:src="@{${post.photoUrl}}" width="100" height="100">
         </td>
         <td th:text="${#numbers.formatInteger(post.amount, 3, 'COMMA')} + ' 원'"></td>
     </tr>
 </table>
 
-<!-- 페이징 버튼 -->
+<!-- 페이징 -->
 <div>
     <a th:if="${postsPage.hasPrevious()}" th:href="@{/board/rooms(page=${postsPage.number - 1}, size=${postsPage.size})}">이전</a>
     <span th:text="${postsPage.number + 1}"></span> / <span th:text="${postsPage.totalPages}"></span>
     <a th:if="${postsPage.hasNext()}" th:href="@{/board/rooms(page=${postsPage.number + 1}, size=${postsPage.size})}">다음</a>
 </div>
 
-<!-- 카테고리 변경 -->
+<!-- 카테고리 선택 -->
 <form>
     <select onchange="location = this.value;">
         <option value="/board/rooms" selected>방 있음</option>
         <option value="/board/no-rooms">방 없음</option>
     </select>
 </form>
+
+<a th:href="@{/board/post/create}">글 등록</a>
 
 </body>
 </html>

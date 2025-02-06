@@ -20,24 +20,28 @@
     <td th:text="${post.rm_board_title}"></td>
     <td th:text="${post.author_name}"></td>
     <td th:text="${post.post_views}"></td>
-    <td th:text="${post.post_date}"></td>
+    <td th:text="${post.postDate}"></td>
     <td th:text="${post.author_region}"></td>
     <td th:text="${post.category}"></td>
   </tr>
 </table>
 
-<!-- 페이징 버튼 -->
+<!-- 페이징 -->
 <div>
   <a th:if="${postsPage.hasPrevious()}" th:href="@{/board/no-rooms(page=${postsPage.number - 1}, size=${postsPage.size})}">이전</a>
   <span th:text="${postsPage.number + 1}"></span> / <span th:text="${postsPage.totalPages}"></span>
   <a th:if="${postsPage.hasNext()}" th:href="@{/board/no-rooms(page=${postsPage.number + 1}, size=${postsPage.size})}">다음</a>
 </div>
-<!-- 카테고리 변경 -->
+
+<!-- 카테고리 선택 -->
 <form>
   <select onchange="location = this.value;">
     <option value="/board/no-rooms" selected>방 없음</option>
-    <option value="/board/rooms" >방 있음</option>
+    <option value="/board/rooms">방 있음</option>
   </select>
 </form>
+
+<a th:href="@{/board/post/create}">글 등록</a>
+
 </body>
 </html>
