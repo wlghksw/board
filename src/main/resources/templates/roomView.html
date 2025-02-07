@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 상세 조회</title>
+</head>
+<body>
+<h1 th:text="${post.rm_board_title}"></h1>
+<p>작성자: <span th:text="${post.author_name}"></span></p>
+<p>조회수: <span th:text="${post.post_views}"></span></p>
+<p>등록 날짜: <span th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+<p>지역: <span th:text="${post.author_region}"></span></p>
+<p>금액: <span th:text="${post.amount}"></span> 만원</p>
+<p>보증금: <span th:text="${post.deposit}"></span> 만원</p>
+<p>내용:</p>
+<pre th:text="${post.post_content}"></pre>
+
+<div th:if="${post.photoUrl}">
+    <img th:src="@{${post.photoUrl}}" alt="첨부 이미지" style="max-width: 500px;">
+</div>
+<a th:if="${post.user_id == 'testUser'}" th:href="@{/board/post/edit/{id}(id=${post.rm_Post_Id})}">수정</a>
+
+<a href="/board/rooms">목록</a>
+</body>
+</html>
