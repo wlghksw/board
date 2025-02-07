@@ -18,7 +18,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    // 최신순 정렬 적용
+    //최신순 정렬 적용
     public Page<Post> getPostsByCategory(String category, Pageable pageable) {
         return postRepository.findByCategoryOrderByPostDateDesc(category, pageable);
     }
@@ -27,4 +27,9 @@ public class PostService {
     public void savePost(Post post) {
         postRepository.save(post);
     }
+
+    public Post getPostById(Long id) {
+        return postRepository.findById(id).orElse(null);
+    }
+
 }

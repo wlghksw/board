@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>글 수정</title>
+  <script>
+    function toggleFields() {
+      var category = document.getElementById("category").value;
+      var extraFields = document.getElementById("extraFields");
+
+      if (category === "방 있음") {
+        extraFields.style.display = "block";
+      } else {
+        extraFields.style.display = "none";
+      }
+    }
+  </script>
+</head>
+<body>
+<h1>글 수정</h1>
+
+<form th:action="@{/board/post/update}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="id" th:value="${post.rm_Post_Id}">
+
+  <label>제목: <input type="text" name="rm_board_title" th:value="${post.rm_board_title}" required></label><br>
+  <label>내용: <textarea name="post_content" required th:text="${post.post_content}"></textarea></label><br>
+
+  <!-- 카테고리 선택 -->
+  <label>카테고리:
+    <select id="category" name="category" onchange="toggleFields()">
+      <option value="방 있음" th:selected="${post.category == '방 있음'}">방 있음</option>
+      <option value="방 없음" th:selected="${post.category == '방 없음'}">방 없음</option>
+    </select>
+  </label><br>
+
+  <div id="extraFields" th:style="${post.category == '방 있음'} ? 'display:block;' : 'display:none;'">
+    <label>금액: <input type="number" name="amount" th:value="${post.amount}" required></label><br>
+    <label>보증금: <input type="number" name="deposit" th:value="${post.deposit}" required></label><br>
+
+    <!-- 기존 사진 -->
+    <div th:if="${post.photoUrl}">
+      <img th:src="@{${post.photoUrl}}" alt="첨부 이미지" style="max-width: 500px;">
+    </div>
+
+    <!-- 새 사진 업로드 -->
+    <label>사진 변경: <input type="file" name="photoFile"></label><br>
+  </div>
+
+  <label>지역: <input type="text" name="author_region" th:value="${post.author_region}" required></label><br>
+
+  <button type="submit">수정 완료</button>
+</form>
+
+<a th:href="@{/board/post/{id}(id=${post.rm_Post_Id})}">취소</a>
+
+<script>
+  toggleFields(); // 페이지 로드 시 올바른 필드 표시
+</script>
+
+</body>
+</html>

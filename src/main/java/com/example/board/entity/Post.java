@@ -24,7 +24,7 @@ public class Post {
     @Column(nullable = false, length = 200)
     private String author_name;
 
-    @Column(nullable = false, name = "post_date")
+    @Column(nullable = false)
     private LocalDateTime postDate;
 
     @Column(nullable = false)

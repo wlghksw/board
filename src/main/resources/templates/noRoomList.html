@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>방 없음 목록</title>
 </head>
 <body>
+
 <h1>방 없음 목록</h1>
 
 <table border="1">
@@ -14,15 +15,14 @@
     <th>조회수</th>
     <th>날짜</th>
     <th>지역</th>
-    <th>카테고리</th>
   </tr>
   <tr th:each="post : ${postsPage.content}">
-    <td th:text="${post.rm_board_title}"></td>
+    <!-- 제목을 클릭하면 해당 글의 상세 페이지로 이동 -->
+    <td><a th:href="@{/board/post/{id}(id=${post.rm_Post_Id})}" th:text="${post.rm_board_title}"></a></td>
     <td th:text="${post.author_name}"></td>
     <td th:text="${post.post_views}"></td>
-    <td th:text="${post.postDate}"></td>
+    <td th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd HH:mm')}"></td>
     <td th:text="${post.author_region}"></td>
-    <td th:text="${post.category}"></td>
   </tr>
 </table>
 
@@ -41,6 +41,7 @@
   </select>
 </form>
 
+<!-- 글 등록 버튼 -->
 <a th:href="@{/board/post/create}">글 등록</a>
 
 </body>
