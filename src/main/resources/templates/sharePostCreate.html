@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 작성</title>
+</head>
+<body>
+<h1>게시글 작성</h1>
+<form th:action="@{/share/create}" method="post">
+  <label>제목: <input type="text" name="txnBoardTitle" required></label><br> <!-- ✅ 필드명 수정 -->
+  <label>내용: <textarea name="txnBoardContent" required></textarea></label><br>
+  <label>가격: <input type="number" name="price" required></label><br>
+  <label>위치: <input type="text" name="location" required></label><br>
+  <label>사진 URL: <input type="text" name="photoUrl"></label><br>
+  <button type="submit">등록</button>
+</form>
+<a href="/share/list">목록으로</a>
+</body>
+</html>

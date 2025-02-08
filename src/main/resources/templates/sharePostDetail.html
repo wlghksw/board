@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>게시글 상세 보기</title>
+</head>
+<body>
+<h1>게시글 상세 보기</h1>
+<table border="1">
+  <tr><th>제목</th><td th:text="${post.txnBoardTitle}"></td></tr>
+  <tr><th>작성자</th><td th:text="${post.authorName}"></td></tr>
+  <tr><th>가격</th><td th:text="${post.price}"></td></tr>
+  <tr><th>위치</th><td th:text="${post.location}"></td></tr>
+  <tr><th>작성 날짜</th><td th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd')}"></td></tr>
+  <tr><th>조회수</th><td th:text="${post.viewCount}"></td></tr>
+  <tr><th>내용</th><td th:text="${post.txnBoardContent}"></td></tr>
+  <tr><th>사진</th><td><img th:src="${post.photoUrl}" alt="사진 없음" width="200"></td></tr>
+</table>
+
+<a href="/share/list">목록으로</a>
+
+<!-- 본인만 수정 가능 -->
+<div th:if="${post.userId == 'testUser'}">
+  <form th:action="@{/share/{id}/update(id=${post.txnPostId})}" method="get">
+    <button type="submit">수정</button>
+  </form>
+  <form th:action="@{/share/{id}/delete(id=${post.txnPostId})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+    <button type="submit">삭제</button>
+  </form>
+</div>
+</body>
+</html>
