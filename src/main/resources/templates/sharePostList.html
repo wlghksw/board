@@ -7,31 +7,37 @@
 <body>
 <h1>나눔해방 게시판</h1>
 
-<form action="/share/search" method="get">
-    <input type="text" name="keyword" placeholder="제목 검색">
+<form th:action="@{/share/search}" method="get">
+    <input type="text" name="keyword" placeholder="검색어 입력">
     <button type="submit">검색</button>
 </form>
-
-<a href="/share/create">게시글 작성</a>
+<br>
+<a th:href="@{/share/create}">게시글 작성</a>
+<br><br>
 
 <table border="1">
     <thead>
     <tr>
-        <th>번호</th>
         <th>제목</th>
-        <th>작성자</th>
-        <th>조회수</th>
-        <th>작성 날짜</th>
+        <th>사진</th>
+        <th>가격</th>
+        <th>위치</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="post, iterStat : ${posts}">
-        <td th:text="${iterStat.count}"></td>
-        <!-- ✅ 게시글 ID를 URL에 전달 -->
-        <td><a th:href="@{/share/{id}(id=${post.txnPostId})}" th:text="${post.txnBoardTitle}"></a></td>
-        <td th:text="${post.authorName}"></td>
-        <td th:text="${post.viewCount}"></td>
-        <td th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd')}"></td>
+    <tr th:each="post : ${posts}">
+        <!-- 제목 -->
+        <td>
+            <a th:href="@{/share/{id}(id=${post.txnPostId})}" th:text="${post.txnBoardTitle}"></a>
+        </td>
+        <!-- 사진 -->
+        <td>
+            <img th:src="${post.photoUrl}" alt="이미지 없음" width="100">
+        </td>
+        <!-- 가격 -->
+        <td th:text="${post.price} + ' 원'"></td>
+        <!-- 위치 -->
+        <td th:text="${post.location}"></td>
     </tr>
     </tbody>
 </table>

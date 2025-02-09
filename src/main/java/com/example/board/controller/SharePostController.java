@@ -5,8 +5,12 @@ import com.example.board.service.SharePostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/share")
@@ -44,12 +48,28 @@ public class SharePostController {
 
     // ✅ 게시글 등록 (로그인 기능 없이 "testUser"로 자동 저장)
     @PostMapping("/create")
-    public String createPost(@ModelAttribute SharePost sharePost) {
-        sharePost.setUserId("testUser"); // 로그인 기능이 없으므로 "testUser"로 설정
-        sharePost.setAuthorName("테스트 사용자");
+    public String createPost(@ModelAttribute SharePost sharePost,
+                             @RequestParam("photo") MultipartFile photo) throws IOException {
+
+        // 임시 로그인 사용자 정보 설정
+        sharePost.setAuthorName("테스트 사용자"); // 필수 값 설정 (임의의 값)
+        sharePost.setUserId("testUser"); // 필수 값 설정 (임의의 값)
+
+        if (!photo.isEmpty()) {
+            String uploadDir = "C:/uploads/";
+            String fileName = UUID.randomUUID() + "_" + photo.getOriginalFilename();
+            File file = new File(uploadDir + fileName);
+            photo.transferTo(file);
+
+            // DB에 저장할 파일 경로
+            sharePost.setPhotoUrl("/uploads/" + fileName);
+        }
+
+
         sharePostService.createPost(sharePost);
         return "redirect:/share/list";
     }
+
 
     // ✅ 게시글 수정 페이지 이동 (본인만 가능)
     @GetMapping("/{id}/update")
@@ -67,13 +87,19 @@ public class SharePostController {
 
     // ✅ 게시글 수정 (본인만 가능)
     @PostMapping("/{id}/update")
-    public String updatePost(@PathVariable Long id, @ModelAttribute SharePost sharePost) {
-        // 로그인한 사용자 ID (임시로 "testUser" 사용)
-        String currentUserId = "testUser";
+    public String updatePost(@PathVariable Long id,
+                             @ModelAttribute SharePost sharePost,
+                             @RequestParam("photo") MultipartFile photo) throws IOException {
+        // 파일 저장 로직
+        if (!photo.isEmpty()) {
+            String fileName = UUID.randomUUID() + "_" + photo.getOriginalFilename();
+            String uploadDir = "C:/uploads/";
+            File file = new File(uploadDir + fileName);
+            photo.transferTo(file);
+            sharePost.setPhotoUrl("/uploads/" + fileName);
+        }
 
-        // 본인 확인 후 수정 진행
-        sharePostService.updatePost(id, sharePost, currentUserId);
-
+        sharePostService.updatePost(id, sharePost, "testUser");
         return "redirect:/share/" + id;
     }
 
@@ -87,9 +113,11 @@ public class SharePostController {
 
     // ✅ 게시글 검색
     @GetMapping("/search")
-    public String searchPosts(@RequestParam String keyword, Model model) {
+    public String searchPosts(@RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                              Model model) {
         List<SharePost> posts = sharePostService.searchPosts(keyword);
         model.addAttribute("posts", posts);
         return "sharePostList";
     }
+
 }

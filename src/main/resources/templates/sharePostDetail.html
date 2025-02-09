@@ -14,7 +14,7 @@
   <tr><th>작성 날짜</th><td th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd')}"></td></tr>
   <tr><th>조회수</th><td th:text="${post.viewCount}"></td></tr>
   <tr><th>내용</th><td th:text="${post.txnBoardContent}"></td></tr>
-  <tr><th>사진</th><td><img th:src="${post.photoUrl}" alt="사진 없음" width="200"></td></tr>
+  <tr><th>사진</th><td><img th:src="${post.photoUrl}" alt="이미지 없음" width="300"></td></tr>
 </table>
 
 <a href="/share/list">목록으로</a>

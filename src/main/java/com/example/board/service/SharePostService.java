@@ -81,6 +81,10 @@ public class SharePostService {
     }
 
     public List<SharePost> searchPosts(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return sharePostRepository.findAll(); // 검색어 없으면 전체 목록 반환
+        }
         return sharePostRepository.findByTxnBoardTitleContaining(keyword);
     }
+
 }
