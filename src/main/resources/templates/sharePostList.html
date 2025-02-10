@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>나눔해방 게시판</title>
+</head>
+<body>
+<h1>나눔해방 게시판</h1>
+
+<form th:action="@{/share/search}" method="get">
+    <input type="text" name="keyword" placeholder="검색어 입력">
+    <button type="submit">검색</button>
+</form>
+<br>
+<a th:href="@{/share/create}">게시글 작성</a>
+<br><br>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>제목</th>
+        <th>사진</th>
+        <th>가격</th>
+        <th>위치</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${posts}">
+        <!-- 제목 -->
+        <td>
+            <a th:href="@{/share/{id}(id=${post.txnPostId})}" th:text="${post.txnBoardTitle}"></a>
+        </td>
+        <!-- 사진 -->
+        <td>
+            <img th:src="${post.photoUrl}" alt="이미지 없음" width="100">
+        </td>
+        <!-- 가격 -->
+        <td th:text="${post.price} + ' 원'"></td>
+        <!-- 위치 -->
+        <td th:text="${post.location}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
