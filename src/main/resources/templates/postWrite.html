@@ -1,30 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>글 등록</title>
+    <script>
+        function toggleFields() {
+            var category = document.getElementById("category").value;
+            var extraFields = document.getElementById("extraFields");
+            extraFields.style.display = (category === "방 있음") ? "block" : "none";
+        }
+    </script>
 </head>
 <body>
+
 <h1>글 등록</h1>
 
-<form th:action="@{/board/post/save}" method="post" enctype="multipart/form-data">
-    <label>제목: <input type="text" name="rm_board_title" required></label><br>
-    <label>내용: <textarea name="post_content" required></textarea></label><br>
-    <label>사진: <input type="file" name="photoFile"></label><br>
-    <label>금액: <input type="number" name="amount" required></label><br>
-    <label>지역: <input type="text" name="author_region" required></label><br>
-    <label>보증금: <input type="number" name="deposit" required></label><br>
+<form th:action="@{/board/post/save}" method="post">
+    <label>제목: <input type="text" name="rmBoardTitle" required></label><br>
+    <label>내용: <textarea name="postContent" required></textarea></label><br>
+    <label>지역: <input type="text" name="authorRegion" required></label><br>
 
     <label>카테고리:
-        <select name="category">
+        <select id="category" name="category" onchange="toggleFields()">
             <option value="방 있음">방 있음</option>
             <option value="방 없음">방 없음</option>
         </select>
     </label><br>
 
+    <div id="extraFields" style="display:none;">
+        <label>금액: <input type="number" name="amount"></label><br>
+        <label>보증금: <input type="number" name="deposit"></label><br>
+    </div>
+
     <button type="submit">등록</button>
 </form>
 
 <a href="/board/rooms">목록</a>
+
+<script>toggleFields();</script>
+
 </body>
 </html>

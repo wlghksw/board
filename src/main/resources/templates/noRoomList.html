@@ -7,6 +7,11 @@
 <body>
 
 <h1>방 없음 목록</h1>
+<form th:action="@{/board/search}" method="get">
+  <input type="hidden" name="category" value="방 없음">
+  <input type="text" name="keyword" placeholder="제목 또는 작성자 검색" th:value="${keyword}">
+  <button type="submit">검색</button>
+</form>
 
 <table border="1">
   <tr>
@@ -18,11 +23,11 @@
   </tr>
   <tr th:each="post : ${postsPage.content}">
     <!-- 제목을 클릭하면 해당 글의 상세 페이지로 이동 -->
-    <td><a th:href="@{/board/post/{id}(id=${post.rm_Post_Id})}" th:text="${post.rm_board_title}"></a></td>
-    <td th:text="${post.author_name}"></td>
-    <td th:text="${post.post_views}"></td>
+    <td><a th:href="@{/board/post/{id}(id=${post.rmPostId})}" th:text="${post.rmBoardTitle}"></a></td>
+    <td th:text="${post.authorName}"></td>
+    <td th:text="${post.postViews}"></td>
     <td th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd HH:mm')}"></td>
-    <td th:text="${post.author_region}"></td>
+    <td th:text="${post.authorRegion}"></td>
   </tr>
 </table>
 

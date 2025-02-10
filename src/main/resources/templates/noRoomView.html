@@ -5,19 +5,19 @@
     <title>글 상세 조회</title>
 </head>
 <body>
-<h1 th:text="${post.rm_board_title}"></h1>
-<p>작성자: <span th:text="${post.author_name}"></span></p>
-<p>조회수: <span th:text="${post.post_views}"></span></p>
+<h1 th:text="${post.rmBoardTitle}"></h1>
+<p>작성자: <span th:text="${post.authorName}"></span></p>
+<p>조회수: <span th:text="${post.postViews}"></span></p>
 <p>등록 날짜: <span th:text="${#temporals.format(post.postDate, 'yyyy-MM-dd HH:mm')}"></span></p>
-<p>지역: <span th:text="${post.author_region}"></span></p>
+<p>지역: <span th:text="${post.authorRegion}"></span></p>
 <p>내용:</p>
-<pre th:text="${post.post_content}"></pre>
+<pre th:text="${post.postContent}"></pre>
 
-<a th:if="${post.user_id == 'testUser'}" th:href="@{/board/post/edit/{id}(id=${post.rm_Post_Id})}">수정</a>
+<a th:if="${post.userId == 'testUser'}" th:href="@{/board/post/edit/{id}(id=${post.rmPostId})}">수정</a>
 
 <a href="/board/no-rooms">목록으로</a>
 
-    <form th:action="@{/board/post/delete/{id}(id=${post.rm_Post_Id})}" method="post">
+    <form th:action="@{/board/post/delete/{id}(id=${post.rmPostId})}" method="post">
         <button type="submit">삭제</button>
     </form>
 </body>
