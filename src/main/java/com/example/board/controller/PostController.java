@@ -189,4 +189,14 @@ public class PostController {
 
         return "redirect:/board/post/" + id;
     }
+    // 글 삭제 (임시 사용자 "testUser"만 삭제 가능)
+    @PostMapping("/post/delete/{id}")
+    public String deletePost(@PathVariable("id") Long id) {
+        Post post = postService.getPostById(id);
+        if (post != null && "testUser".equals(post.getUser_id())) {
+            postService.deletePost(id);
+        }
+        // 카테고리에 따라 목록 페이지로 이동
+        return (post != null && "방 있음".equals(post.getCategory())) ? "redirect:/board/rooms" : "redirect:/board/no-rooms";
+    }
 }

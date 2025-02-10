@@ -15,11 +15,18 @@
 <p>내용:</p>
 <pre th:text="${post.post_content}"></pre>
 
+<!--이미지 수정 필요-->
 <div th:if="${post.photoUrl}">
     <img th:src="@{${post.photoUrl}}" alt="첨부 이미지" style="max-width: 500px;">
 </div>
+
 <a th:if="${post.user_id == 'testUser'}" th:href="@{/board/post/edit/{id}(id=${post.rm_Post_Id})}">수정</a>
 
 <a href="/board/rooms">목록</a>
+
+<form th:action="@{/board/post/delete/{id}(id=${post.rm_Post_Id})}" method="post">
+    <button type="submit">삭제</button>
+</form>
+
 </body>
 </html>

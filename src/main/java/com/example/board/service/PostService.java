@@ -31,5 +31,10 @@ public class PostService {
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElse(null);
     }
+    @Transactional
+    public void deletePost(Long id) {
+        postRepository.deleteById(id);
+    }
+
 
 }

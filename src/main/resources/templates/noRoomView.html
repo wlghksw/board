@@ -16,5 +16,9 @@
 <a th:if="${post.user_id == 'testUser'}" th:href="@{/board/post/edit/{id}(id=${post.rm_Post_Id})}">수정</a>
 
 <a href="/board/no-rooms">목록으로</a>
+
+    <form th:action="@{/board/post/delete/{id}(id=${post.rm_Post_Id})}" method="post">
+        <button type="submit">삭제</button>
+    </form>
 </body>
 </html>
