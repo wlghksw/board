@@ -2,6 +2,7 @@ package com.example.board.controller;
 
 import com.example.board.entity.SharePost;
 import com.example.board.service.SharePostService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,16 @@ public class SharePostController {
 
     // ✅ 게시글 목록 조회
     @GetMapping("/list")
-    public String getAllPosts(Model model) {
-        List<SharePost> posts = sharePostService.getAllPosts();
-        model.addAttribute("posts", posts);
+    public String getAllPosts(@RequestParam(name = "page", defaultValue = "0") int page,
+                              @RequestParam(name = "size", defaultValue = "10") int size,
+                              Model model) {
+        Page<SharePost> postPage = sharePostService.getAllPosts(page, size);
+
+        model.addAttribute("postPage", postPage);
+        model.addAttribute("posts", postPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", postPage.getTotalPages());
+
         return "sharePostList";
     }
 
@@ -89,17 +97,25 @@ public class SharePostController {
     @PostMapping("/{id}/update")
     public String updatePost(@PathVariable Long id,
                              @ModelAttribute SharePost sharePost,
-                             @RequestParam("photo") MultipartFile photo) throws IOException {
-        // 파일 저장 로직
-        if (!photo.isEmpty()) {
+                             @RequestParam(value = "photo", required = false) MultipartFile photo) throws IOException {
+
+        // 기존 게시글 불러오기
+        SharePost existingPost = sharePostService.getPostById(id);
+
+        // 새로운 파일이 업로드되었을 경우만 저장
+        if (photo != null && !photo.isEmpty()) {
             String fileName = UUID.randomUUID() + "_" + photo.getOriginalFilename();
             String uploadDir = "C:/uploads/";
             File file = new File(uploadDir + fileName);
             photo.transferTo(file);
-            sharePost.setPhotoUrl("/uploads/" + fileName);
+            sharePost.setPhotoUrl("/uploads/" + fileName); // 새 이미지 저장
+        } else {
+            sharePost.setPhotoUrl(existingPost.getPhotoUrl()); // 기존 이미지 유지
         }
 
+        // 게시글 업데이트
         sharePostService.updatePost(id, sharePost, "testUser");
+
         return "redirect:/share/" + id;
     }
 

@@ -1,7 +1,12 @@
 package com.example.board.service;
 
+import com.example.board.entity.Post;
 import com.example.board.entity.SharePost;
 import com.example.board.repository.SharePostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +22,10 @@ public class SharePostService {
         this.sharePostRepository = sharePostRepository;
     }
 
-    public List<SharePost> getAllPosts() {
-        return sharePostRepository.findAll();
+    //최신순 정렬 적용
+    public Page<SharePost> getAllPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "postDate"));
+        return sharePostRepository.findAll(pageable);
     }
 
     @Transactional
@@ -63,9 +70,15 @@ public class SharePostService {
         existingPost.setTxnBoardContent(sharePost.getTxnBoardContent());
         existingPost.setPrice(sharePost.getPrice());
         existingPost.setLocation(sharePost.getLocation());
-        existingPost.setPhotoUrl(sharePost.getPhotoUrl());
+
+        // ✅ 기존 사진 유지
+        if (sharePost.getPhotoUrl() != null) {
+            existingPost.setPhotoUrl(sharePost.getPhotoUrl());
+        }
+
         return sharePostRepository.save(existingPost);
     }
+
 
 
     @Transactional

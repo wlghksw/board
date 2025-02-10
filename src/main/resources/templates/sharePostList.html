@@ -41,5 +41,21 @@
     </tr>
     </tbody>
 </table>
+
+<!-- 페이징 네비게이션 -->
+<div>
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{/share/list(page=${currentPage - 1}, size=10)}">이전</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/share/list(page=${i}, size=10)}" th:text="${i + 1}"></a>
+    </span>
+
+    <span th:if="${currentPage + 1 < totalPages}">
+        <a th:href="@{/share/list(page=${currentPage + 1}, size=10)}">다음</a>
+    </span>
+</div>
+
 </body>
 </html>
